@@ -228,26 +228,6 @@ return
 
 mostrarAba("protocolos")
 
-document.getElementById("editor_protocolo").style.display="block"
-
-titulo_protocolo.value=data.titulo
-conteudo_protocolo.value=data.conteudo
-
-protocoloEditando=id
-
-}=await client
-.from("protocolos")
-.select("*")
-.eq("id",id)
-.single()
-
-if(error){
-alert("Erro ao abrir protocolo")
-return
-}
-
-mostrarAba("novo_protocolo")
-
 titulo_protocolo.value=data.titulo
 conteudo_protocolo.value=data.conteudo
 
@@ -270,14 +250,60 @@ protocoloEditando=id
 
 async function salvarProtocolo(){
 
-let titulo=titulo_protocolo.value
-let conteudo=conteudo_protocolo.value
+let titulo = titulo_protocolo.value
+let conteudo = conteudo_protocolo.value
 
-if(!titulo){alert("Digite um título");return}
+if(!titulo){
+alert("Digite um título")
+return
+}
 
 if(protocoloEditando){
-await client.from("protocolos").update({titulo,conteudo}).eq("id",protocoloEditando)
+
+await client
+.from("protocolos")
+.update({titulo,conteudo})
+.eq("id",protocoloEditando)
+
 protocoloEditando=null
+
+}else{
+
+await client
+.from("protocolos")
+.insert([{titulo,conteudo}])
+
+}
+
+titulo_protocolo.value=""
+conteudo_protocolo.value=""
+
+alert("Protocolo salvo")
+
+}
+
+if(protocoloEditando){
+
+await client
+.from("protocolos")
+.update({titulo,conteudo})
+.eq("id",protocoloEditando)
+
+protocoloEditando=null
+
+}else{
+
+await client
+.from("protocolos")
+.insert([{titulo,conteudo}])
+
+}
+
+titulo_protocolo.value=""
+conteudo_protocolo.value=""
+
+alert("Protocolo salvo")
+
 }else{
 await client.from("protocolos").insert([{titulo,conteudo}])
 }
