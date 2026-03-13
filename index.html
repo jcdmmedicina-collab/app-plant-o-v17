@@ -226,6 +226,26 @@ alert("Erro ao abrir protocolo")
 return
 }
 
+mostrarAba("protocolos")
+
+document.getElementById("editor_protocolo").style.display="block"
+
+titulo_protocolo.value=data.titulo
+conteudo_protocolo.value=data.conteudo
+
+protocoloEditando=id
+
+}=await client
+.from("protocolos")
+.select("*")
+.eq("id",id)
+.single()
+
+if(error){
+alert("Erro ao abrir protocolo")
+return
+}
+
 mostrarAba("novo_protocolo")
 
 titulo_protocolo.value=data.titulo
